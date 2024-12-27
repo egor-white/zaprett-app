@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name" translatable="false">zaprett</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Apps</string>
+    <string name="title_notifications">Settings</string>
+    <string name="button_continue">Continue</string>
+    <string name="text_welcome">Hello to zaprett! This application is designed to bypass censorship and other blockages. For full functionality you need to install Magisk module.</string>
+</resources>

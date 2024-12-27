@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Главная</string>
+    <string name="title_dashboard">Приложения</string>
+    <string name="title_notifications">Настройки</string>
+    <string name="button_continue">Продолжить</string>
+    <string name="text_welcome">Привет в zaprett! Это приложение предназначено для обхода цензуры и иных блокировок. Для полноценной работоспособности необходимо установить Magisk модуль.</string>
+</resources>
