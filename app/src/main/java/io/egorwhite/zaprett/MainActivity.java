@@ -4,6 +4,7 @@ import static android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMI
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -23,11 +24,15 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     //Настройки приложения
-
+    private static final String PREFS_FILE = "Account";
+    private static final String PREF_NAME = "Name";
+    SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        settings = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
