@@ -69,14 +69,4 @@ public class ModuleInteractor {
     public static File[] getAllLists(){
         return new File("/data/zaprett/lists").listFiles();
     }
-    public static File[] getActiveLists(){
-        try (BufferedReader br = new BufferedReader(new FileReader(new File("/data/zaprett/activelists")))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // process the line.
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
