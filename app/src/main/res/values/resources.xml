@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.BottomNavBar" parent="Theme.Zaprett">
+        <item name="colorPrimary">@color/light_window</item>
+        <item name="android:textColorSecondary">@color/navbar</item>
+    </style>
+</resources>

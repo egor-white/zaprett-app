@@ -5,17 +5,24 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="?attr/actionBarSize">
+    android:background="@color/background"
+    android:paddingTop="0dp"
+    android:visibility="visible">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/navbar"
+        app:backgroundTint="@color/navbar"
+        app:itemIconTint="@color/secondaryColor"
+        app:itemRippleColor="@color/primaryColor"
+        app:itemTextColor="@color/secondaryColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu"
+        style="@style/Theme.BottomNavBar"
         tools:visibility="visible" />
 
     <fragment

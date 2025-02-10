@@ -1,16 +1,16 @@
-package io.egorwhite.zaprett.ui.apps;
+package io.egorwhite.zaprett.ui.strategy;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class AppsViewModel extends ViewModel {
+public class StrategyViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public AppsViewModel() {
+    public StrategyViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is notifications fragment");
     }
 
     public LiveData<String> getText() {

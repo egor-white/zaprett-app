@@ -1,4 +1,4 @@
-package io.egorwhite.zaprett.ui.apps;
+package io.egorwhite.zaprett.ui.hosts;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import io.egorwhite.zaprett.databinding.FragmentAppsBinding;
+import io.egorwhite.zaprett.databinding.FragmentHostsBinding;
 
-public class AppsFragment extends Fragment {
+public class HostsFragment extends Fragment {
 
-    private FragmentAppsBinding binding;
+    private FragmentHostsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AppsViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(AppsViewModel.class);
+        HostsViewModel HostsViewModel =
+                new ViewModelProvider(this).get(HostsViewModel.class);
 
-        binding = FragmentAppsBinding.inflate(inflater, container, false);
+        binding = FragmentHostsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         return root;
     }
 
