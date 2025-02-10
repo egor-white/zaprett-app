@@ -1,10 +1,11 @@
 package io.egorwhite.zaprett;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModuleInteractor {
     public static boolean checkRoot() {
@@ -57,16 +58,38 @@ public class ModuleInteractor {
     }
     public static void setStartOnBoot(boolean startOnBoot){
         try {
-            if (startOnBoot) Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","touch /data/zaprett/autostart"});
-            else Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","rm -f /data/zaprett/autostart"});
+            if (startOnBoot) Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","touch /storage/emulated/0/zaprett/autostart"});
+            else Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","rm -f /storage/emulated/0/zaprett/autostart"});
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     public static boolean getStartOnBoot(){
-        return new File("/data/zaprett/autostart").exists();
+        return new File("/storage/emulated/0/zaprett/autostart").exists();
     }
-    public static File[] getAllLists(){
-        return new File("/data/zaprett/lists").listFiles();
+    public static String[] getAllLists() {
+        try {
+            java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett getlists"}).getInputStream()).useDelimiter("\\A");
+            return new String(s.hasNext() ? s.next() : "").split(" ");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new String[]{};
+    }
+    public static String[] getActiveLists() {
+        try {
+            java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett getactivelists"}).getInputStream()).useDelimiter("\\A");
+            return new String(s.hasNext() ? s.next() : "").split(" ");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new String[]{};
+    }
+    public static HashMap getLists() {
+        HashMap<String, Boolean> lists = new HashMap<>();
+        for (String list : getAllLists()) {
+            lists.put(list, Arrays.stream(getActiveLists()).anyMatch(list::contains));
+        }
+        return lists;
     }
 }

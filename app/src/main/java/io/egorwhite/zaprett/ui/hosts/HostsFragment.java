@@ -1,6 +1,7 @@
 package io.egorwhite.zaprett.ui.hosts;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.io.IOException;
+
+import io.egorwhite.zaprett.ModuleInteractor;
 import io.egorwhite.zaprett.databinding.FragmentHostsBinding;
 
 public class HostsFragment extends Fragment {
@@ -24,6 +28,7 @@ public class HostsFragment extends Fragment {
         binding = FragmentHostsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        ModuleInteractor.getLists();
 
         return root;
     }
