@@ -32,11 +32,18 @@
         app:layout_anchor="@+id/tittlezaprettbg"
         app:layout_anchorGravity="start|center"
         />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/itembg" />
+        android:layout_marginTop="100dp">
+        <LinearLayout
+            android:id="@+id/listlayout"
+            style="@style/Theme.Zaprett"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp">
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

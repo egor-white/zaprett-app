@@ -1,5 +1,7 @@
 package io.egorwhite.zaprett;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,6 +72,7 @@ public class ModuleInteractor {
     public static String[] getAllLists() {
         try {
             java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett getlists"}).getInputStream()).useDelimiter("\\A");
+            //Log.d("All lists", s.next());
             return new String(s.hasNext() ? s.next() : "").split(" ");
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,17 +82,25 @@ public class ModuleInteractor {
     public static String[] getActiveLists() {
         try {
             java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett getactivelists"}).getInputStream()).useDelimiter("\\A");
+            //Log.d("Active lists", s.next());
             return new String(s.hasNext() ? s.next() : "").split(" ");
         } catch (IOException e) {
             e.printStackTrace();
         }
         return new String[]{};
     }
-    public static HashMap getLists() {
-        HashMap<String, Boolean> lists = new HashMap<>();
-        for (String list : getAllLists()) {
-            lists.put(list, Arrays.stream(getActiveLists()).anyMatch(list::contains));
+    public static void enableList(String path){
+        try {
+            Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett enablelist "+path});
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return lists;
+    }
+    public static void disableList(String path){
+        try {
+            Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett disablelist "+path});
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

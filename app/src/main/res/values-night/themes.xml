@@ -16,5 +16,6 @@
         <!-- Customize your theme here. -->
         <item name="android:font">@font/productsans</item>
         <item name="android:navigationBarColor">@color/navbar</item>
+        <item name="switchStyle">@style/Widget.Material3.CompoundButton.MaterialSwitch</item>
     </style>
 </resources>
