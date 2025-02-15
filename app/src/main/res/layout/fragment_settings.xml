@@ -31,60 +31,48 @@
         app:layout_anchor="@+id/tittlezaprettbg"
         app:layout_anchorGravity="start|center"
         />
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/btn_use_module"
-        style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:checked="false"
-        android:fontFamily="@font/productsans"
-        android:paddingHorizontal="15dp"
-        android:switchMinWidth="56dp"
-        android:text="@string/btn_use_root"
-        android:textAlignment="textStart"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:thumbTextPadding="25dp"
-        android:typeface="sans"
-        app:thumbTint="@color/brightest"
-        app:trackTint="@color/light_window"
-        tools:text="@string/btn_use_root" />
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/btn_update_on_create"
-        style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:checked="false"
-        android:fontFamily="@font/productsans"
-        android:paddingHorizontal="15dp"
-        android:switchMinWidth="56dp"
-        android:text="@string/btn_update_on_boot"
-        android:textAlignment="textStart"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:thumbTextPadding="25dp"
-        android:typeface="sans"
-        app:thumbTint="@color/brightest"
-        app:trackTint="@color/light_window"
-        tools:text="@string/btn_update_on_boot" />
+        android:orientation="vertical">
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/btn_use_module"
+            style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:fontFamily="@font/productsans"
+            android:paddingHorizontal="15dp"
+            android:switchMinWidth="56dp"
+            android:text="@string/btn_use_root"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:thumbTextPadding="25dp"
+            android:typeface="sans"
+            app:thumbTint="@color/brightest"
+            app:trackTint="@color/light_window"
+            tools:text="@string/btn_use_root" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/btn_update_on_create"
+            style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
+            android:checked="false"
+            android:fontFamily="@font/productsans"
+            android:paddingHorizontal="15dp"
+            android:switchMinWidth="56dp"
+            android:text="@string/btn_update_on_boot"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:thumbTextPadding="25dp"
+            android:typeface="sans"
+            app:thumbTint="@color/brightest"
+            app:trackTint="@color/light_window"
+            tools:text="@string/btn_update_on_boot" />
 
-    <!--<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="100dp">
-
-    </LinearLayout>!-->
-
-    <!--<ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-    </ScrollView>!-->
-
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

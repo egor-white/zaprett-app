@@ -25,4 +25,6 @@
     <string name="snack_starting_service">Запускаем сервис...</string>
     <string name="snack_no_service">Сервис не запущен</string>
     <string name="snack_stopping_service">Останавливаем сервис...</string>
+    <string name="error_no_storage_title">Нет разрешения</string>
+    <string name="error_no_storage_message">Для правильной работы приложения необходимо разрешение на доступ к хранилищу</string>
 </resources>

@@ -1,13 +1,24 @@
 package io.egorwhite.zaprett;
 
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
+import android.os.Environment;
 
 public class ModuleInteractor {
     public static boolean checkRoot() {
@@ -59,46 +70,57 @@ public class ModuleInteractor {
         }
     }
     public static void setStartOnBoot(boolean startOnBoot){
+        //TODO
+    }
+    public static boolean getStartOnBoot(){
+        Properties props = new Properties();
         try {
-            if (startOnBoot) Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","touch /storage/emulated/0/zaprett/autostart"});
-            else Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","rm -f /storage/emulated/0/zaprett/autostart"});
+            FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
+            props.load(input);
+            Log.d("Autostart",  "Use autostart: "+props.getProperty("autostart"));
+            return props.getProperty("autostart").contains("true");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public static boolean getStartOnBoot(){
-        return new File("/storage/emulated/0/zaprett/autostart").exists();
-    }
     public static String[] getAllLists() {
-        try {
-            java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett getlists"}).getInputStream()).useDelimiter("\\A");
-            //Log.d("All lists", s.next());
-            return new String(s.hasNext() ? s.next() : "").split(" ");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new String[]{};
+        return new File(String.valueOf(Environment.getExternalStorageDirectory())+"/zaprett/lists/").list();
     }
     public static String[] getActiveLists() {
+        Properties props = new Properties();
         try {
-            java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett getactivelists"}).getInputStream()).useDelimiter("\\A");
-            //Log.d("Active lists", s.next());
-            return new String(s.hasNext() ? s.next() : "").split(" ");
+            FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
+            props.load(input);
+            Log.d("Active lists",  props.getProperty("activelists"));
+            return props.getProperty("activelists").split(",");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return new String[]{};
     }
     public static void enableList(String path){
+        Properties props = new Properties();
         try {
-            Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett enablelist "+path});
+            FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
+            OutputStream output = new FileOutputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
+            props.load(input);
+            if (props.getProperty("activelists")==null) props.setProperty("activelists", path);
+            else props.setProperty("activelists", props.getProperty("activelists")+", "+path);
+            props.setProperty("autostart", props.getProperty("autostart"));
+            props.setProperty("zaprettdir", props.getProperty("zaprettdir"));
+            props.store(output, null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     public static void disableList(String path){
+        //TODO
+    }
+    public static String getZaprettPath(){
+        Properties props = new Properties();
         try {
-            Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett disablelist "+path});
+            FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
+            props.load(input);
+            return props.getProperty("zaprettdir");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

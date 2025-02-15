@@ -51,29 +51,26 @@ public class HostsFragment extends Fragment {
         String[] activeLists = ModuleInteractor.getActiveLists();
         for(int i = 0; i < allLists.length; i++){
             String list = allLists[i];
-            Log.d("Lists count", "Count: "+allLists.length);
             if (list!=null&&!list.isEmpty()){
                 SwitchMaterial switchMaterial = new SwitchMaterial(root.getContext());
                 CharSequence seq = list;
                 switchMaterial.setText(seq);
+                for(String actlist : activeLists){
+                    if (actlist.contains(list)){
+                        switchMaterial.setChecked(true);
+                        Log.d("Enabled switch", "Enabled switch for "+list);
+                        break;
+                    }
+                }
                 switchMaterial.setOnCheckedChangeListener((compoundButton, b) -> {
                     if (b) ModuleInteractor.enableList(list);
                     else ModuleInteractor.disableList(list);
                 });
                 listLayout.addView(switchMaterial);
-                Log.i("Added element", "added switch for "+list);
+                Log.i("Added element", "Added switch for "+list);
             }
         }
-        for(int i = 0; i < listLayout.getChildCount(); i++){
-            SwitchMaterial switchMaterial = (SwitchMaterial) listLayout.getChildAt(i);
-            switchMaterial.setChecked(Arrays.stream(activeLists).anyMatch(switchMaterial.getText().toString()::contains));
-            for (int j = 0; j<activeLists.length; j++){
-                if (switchMaterial.getText().toString().equals(activeLists[j])){
-                    switchMaterial.setChecked(true);
-                    break;
-                }
-            }
-        }
+
         return root;
     }
 

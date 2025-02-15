@@ -25,4 +25,6 @@
     <string name="snack_starting_service">Starting service...</string>
     <string name="snack_no_service">Service is not launched</string>
     <string name="snack_stopping_service">Stopping service...</string>
+    <string name="error_no_storage_title">No permission</string>
+    <string name="error_no_storage_message">The application requires permission to acess the storage to work properly</string>
 </resources>

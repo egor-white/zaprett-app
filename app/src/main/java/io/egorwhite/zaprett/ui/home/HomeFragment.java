@@ -2,6 +2,7 @@ package io.egorwhite.zaprett.ui.home;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,11 @@ public class HomeFragment extends Fragment {
         ImageView statusbar = root.getRootView().findViewById(R.id.statusbarbg);
         ImageView statusicon = root.getRootView().findViewById(R.id.statusicon);
         TextView statustext = root.getRootView().findViewById(R.id.statustitle);
+
+        if (MainActivity.settings.getBoolean("use_module", false) && ModuleInteractor.getStartOnBoot()){
+            autostart.setChecked(true);
+            Log.d("Enabled switch", "Enabled autostart switch");
+        }
 
         fab.setOnClickListener(v -> {
             if (MainActivity.settings.getBoolean("use_module", false)) {
@@ -115,7 +121,6 @@ public class HomeFragment extends Fragment {
                 statusicon.setImageResource(R.drawable.ic_disabled_black_24dp);
                 statustext.setText(R.string.status_disabled);
             }
-            autostart.setChecked(ModuleInteractor.getStartOnBoot());
         }
 
         return root;
