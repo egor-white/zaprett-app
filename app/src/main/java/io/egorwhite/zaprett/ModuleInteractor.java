@@ -10,20 +10,25 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.Scanner;
 
 import android.os.Environment;
 
 public class ModuleInteractor {
     public static boolean checkRoot() {
         try {
-            java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","cd / && ls"}).getInputStream()).useDelimiter("\\A");
+            Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","cd / && ls"}).getInputStream()).useDelimiter("\\A");
             return !(s.hasNext() ? s.next() : "").isEmpty();
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,7 +37,7 @@ public class ModuleInteractor {
     }
     public static boolean checkModuleInstallation(){
         try {
-            java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett"}).getInputStream()).useDelimiter("\\A");
+            Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett"}).getInputStream()).useDelimiter("\\A");
             return (s.hasNext() ? s.next() : "").contains("zaprett");
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,7 +46,7 @@ public class ModuleInteractor {
     }
     public static boolean getStatus(){
         try {
-            java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett status"}).getInputStream()).useDelimiter("\\A");
+            Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","/system/bin/zaprett status"}).getInputStream()).useDelimiter("\\A");
             return (s.hasNext() ? s.next() : "").contains("working");
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,7 +75,16 @@ public class ModuleInteractor {
         }
     }
     public static void setStartOnBoot(boolean startOnBoot){
-        //TODO
+        Properties props = new Properties();
+        try {
+            FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
+            props.load(input);
+            props.setProperty("autostart", String.valueOf(startOnBoot));
+            OutputStream output = new FileOutputStream(getZaprettPath()+"/config");
+            props.store(output, "Don't place '/' in end of directory! Example: /sdcard");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     public static boolean getStartOnBoot(){
         Properties props = new Properties();
@@ -78,18 +92,23 @@ public class ModuleInteractor {
             FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
             props.load(input);
             Log.d("Autostart",  "Use autostart: "+props.getProperty("autostart"));
-            return props.getProperty("autostart").contains("true");
+            return props.getProperty("autostart").contains("true")||props.getProperty("autostart").contains("1");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     public static String[] getAllLists() {
-        return new File(String.valueOf(Environment.getExternalStorageDirectory())+"/zaprett/lists/").list();
+        String[] onlyNames = new File(getZaprettPath()+"/lists/").list();
+        String[] fullPath = new String[Objects.requireNonNull(onlyNames).length];
+        for(int i = 0; i < onlyNames.length; i++){
+            fullPath[i] = getZaprettPath()+"/lists/"+onlyNames[i];
+        }
+        return fullPath;
     }
     public static String[] getActiveLists() {
         Properties props = new Properties();
         try {
-            FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
+            FileInputStream input = new FileInputStream(getZaprettPath()+"/config");
             props.load(input);
             Log.d("Active lists",  props.getProperty("activelists"));
             return props.getProperty("activelists").split(",");
@@ -101,19 +120,37 @@ public class ModuleInteractor {
         Properties props = new Properties();
         try {
             FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
-            OutputStream output = new FileOutputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
             props.load(input);
-            if (props.getProperty("activelists")==null) props.setProperty("activelists", path);
-            else props.setProperty("activelists", props.getProperty("activelists")+", "+path);
-            props.setProperty("autostart", props.getProperty("autostart"));
-            props.setProperty("zaprettdir", props.getProperty("zaprettdir"));
-            props.store(output, null);
+            if (!props.getProperty("activelists").contains(path)){
+                if (props.getProperty("activelists")!=null) props.setProperty("activelists", props.getProperty("activelists")+","+path);
+                else props.setProperty("activelists", path);
+            }
+            OutputStream output = new FileOutputStream(getZaprettPath()+"/config");
+            props.store(output, "Don't place '/' in end of directory! Example: /sdcard");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     public static void disableList(String path){
-        //TODO
+        Properties props = new Properties();
+        try {
+            FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
+            props.load(input);
+            if (props.getProperty("activelists").contains(path)){
+                ArrayList<String> lists = new ArrayList<>(Arrays.asList(props.getProperty("activelists").split(",")));
+                lists.remove(path);
+                String actlists = "";
+                for (int i = 0; i < lists.size(); i++){
+                    if (i<(lists.size()-1)) actlists+=(lists.get(i)+",");
+                    else actlists+=lists.get(i);
+                }
+                props.setProperty("activelists", actlists);
+            }
+            OutputStream output = new FileOutputStream(getZaprettPath()+"/config");
+            props.store(output, "Don't place '/' in end of directory! Example: /sdcard");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     public static String getZaprettPath(){
         Properties props = new Properties();

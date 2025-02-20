@@ -5,7 +5,7 @@
     <string name="title_settings">Settings</string>
     <string name="btn_continue">Continue</string>
     <string name="text_welcome">Hello to zaprett! This application is designed to bypass censorship and other blockages. For full functionality you need to install Magisk module.</string>
-    <string name="btn_use_root">Use Magisk module</string>
+    <string name="btn_use_root">Use module</string>
     <string name="error_root_title">Can\'t get root</string>
     <string name="error_root_message">Couldn\'t get root access. Give root access to use the Magisk module</string>
     <string name="error_no_module_title">Module is not installed</string>
@@ -27,4 +27,5 @@
     <string name="snack_stopping_service">Stopping service...</string>
     <string name="error_no_storage_title">No permission</string>
     <string name="error_no_storage_message">The application requires permission to acess the storage to work properly</string>
+    <string name="btn_show_full_path">Show full list\'s path</string>
 </resources>

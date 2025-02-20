@@ -5,7 +5,7 @@
     <string name="title_settings">Настройки</string>
     <string name="btn_continue">Продолжить</string>
     <string name="text_welcome">Привет в zaprett! Это приложение предназначено для обхода цензуры и иных блокировок. Для полноценной работоспособности необходимо установить Magisk модуль.</string>
-    <string name="btn_use_root">Использовать модуль Magisk</string>
+    <string name="btn_use_root">Использовать модуль</string>
     <string name="error_root_title">Root не получен</string>
     <string name="error_root_message">Не получилось получить root доступ. Дайте права root для использования модуля Magisk</string>
     <string name="error_no_module_title">Модуль не установлен</string>
@@ -27,4 +27,5 @@
     <string name="snack_stopping_service">Останавливаем сервис...</string>
     <string name="error_no_storage_title">Нет разрешения</string>
     <string name="error_no_storage_message">Для правильной работы приложения необходимо разрешение на доступ к хранилищу</string>
+    <string name="btn_show_full_path">Показывать полный путь к листу</string>
 </resources>

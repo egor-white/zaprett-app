@@ -17,5 +17,8 @@
         <item name="android:font">@font/productsans</item>
         <item name="android:navigationBarColor">@color/navbar</item>
         <item name="switchStyle">@style/Widget.Material3.CompoundButton.MaterialSwitch</item>
+        <item name="thumbTint">@color/brightest</item>
+        <item name="trackTint">@color/light_window</item>
+        <item name="switchMinWidth">56dp</item>
     </style>
 </resources>

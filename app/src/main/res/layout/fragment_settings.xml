@@ -38,41 +38,39 @@
         android:orientation="vertical">
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/btn_use_module"
-            style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+            style="@style/Custom.Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:fontFamily="@font/productsans"
             android:paddingHorizontal="15dp"
-            android:switchMinWidth="56dp"
             android:text="@string/btn_use_root"
             android:textAlignment="textStart"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            android:thumbTextPadding="25dp"
-            android:typeface="sans"
-            app:thumbTint="@color/brightest"
-            app:trackTint="@color/light_window"
             tools:text="@string/btn_use_root" />
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/btn_update_on_create"
-            style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+            style="@style/Custom.Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:checked="false"
-            android:fontFamily="@font/productsans"
             android:paddingHorizontal="15dp"
-            android:switchMinWidth="56dp"
             android:text="@string/btn_update_on_boot"
             android:textAlignment="textStart"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            android:thumbTextPadding="25dp"
-            android:typeface="sans"
-            app:thumbTint="@color/brightest"
-            app:trackTint="@color/light_window"
             tools:text="@string/btn_update_on_boot" />
-
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/btn_show_full_path"
+            style="@style/Custom.Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:paddingHorizontal="15dp"
+            android:text="@string/btn_show_full_path"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            tools:text="@string/btn_show_full_path" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

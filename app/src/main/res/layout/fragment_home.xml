@@ -105,22 +105,17 @@
         />
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/btn_toggle_autostart"
-        style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+        style="@style/Custom.Switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="365dp"
         android:checked="false"
-        android:fontFamily="@font/productsans"
         android:paddingHorizontal="15dp"
-        android:switchMinWidth="56dp"
         android:text="@string/btn_autostart"
         android:textAlignment="textStart"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:thumbTextPadding="25dp"
-        android:typeface="sans"
-        app:thumbTint="@color/brightest"
-        app:trackTint="@color/light_window"
         tools:text="@string/btn_autostart" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

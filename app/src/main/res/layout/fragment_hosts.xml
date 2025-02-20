@@ -38,7 +38,7 @@
         android:layout_marginTop="100dp">
         <LinearLayout
             android:id="@+id/listlayout"
-            style="@style/Theme.Zaprett"
+            style="@style/Custom.Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

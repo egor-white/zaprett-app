@@ -11,7 +11,14 @@
         <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
 
         <item name="android:statusBarColor">@color/normal_window</item>
+        <!-- Customize your theme here. -->
         <item name="android:font">@font/productsans</item>
         <item name="android:navigationBarColor">@color/navbar</item>
+
+    </style>
+    <style name="Custom.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="switchStyle">@style/Widget.Material3.CompoundButton.MaterialSwitch</item>
+        <item name="thumbTint">@color/brightest</item>
+        <item name="trackTint">@color/light_window</item>
     </style>
 </resources>
