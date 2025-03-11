@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
         root = binding.getRoot();
 
         FloatingActionButton fab = root.getRootView().findViewById(R.id.fab);
-        SwitchMaterial autostart = root.getRootView().findViewById(R.id.btn_toggle_autostart);
+        SwitchMaterial autorestart = root.getRootView().findViewById(R.id.btn_toggle_autorestart);
         Button startservice = root.getRootView().findViewById(R.id.btn_start_service);
         Button stopservice = root.getRootView().findViewById(R.id.btn_stop_service);
         ImageView statusbar = root.getRootView().findViewById(R.id.statusbarbg);
@@ -49,8 +49,8 @@ public class HomeFragment extends Fragment {
         TextView statustext = root.getRootView().findViewById(R.id.statustitle);
 
         if (MainActivity.settings.getBoolean("use_module", false) && ModuleInteractor.getStartOnBoot()){
-            autostart.setChecked(true);
-            Log.d("Enabled switch", "Enabled autostart switch");
+            autorestart.setChecked(true);
+            Log.d("Enabled switch", "Enabled autorestart switch");
         }
 
         fab.setOnClickListener(v -> {
@@ -102,9 +102,10 @@ public class HomeFragment extends Fragment {
             else Snackbar.make(root.getRootView(), R.string.snack_module_disabled, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
 
         });
-        autostart.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        autorestart.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (MainActivity.settings.getBoolean("use_module", false)){
                 ModuleInteractor.setStartOnBoot(isChecked);
+                Snackbar.make(root.getRootView(), R.string.pls_reboot_snack, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
             }
             else {
                 buttonView.setChecked(false);

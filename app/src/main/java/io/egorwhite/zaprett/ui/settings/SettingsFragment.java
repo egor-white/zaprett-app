@@ -124,7 +124,7 @@ public class SettingsFragment extends Fragment {
             }*/
         });
         btn_update_on_boot.setOnCheckedChangeListener((buttonView, isChecked) -> {MainActivity.settings.edit().putBoolean("update_on_boot", isChecked);});
-        btn_show_full_path.setOnCheckedChangeListener((buttonView, isChecked) -> {MainActivity.settings.edit().putBoolean("show_full_path", true).apply();});
+        btn_show_full_path.setOnCheckedChangeListener((buttonView, isChecked) -> {MainActivity.settings.edit().putBoolean("show_full_path", isChecked).apply();});
 
         return root;
     }

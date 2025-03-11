@@ -17,7 +17,6 @@
 
     </style>
     <style name="Custom.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="switchStyle">@style/Widget.Material3.CompoundButton.MaterialSwitch</item>
         <item name="thumbTint">@color/brightest</item>
         <item name="trackTint">@color/light_window</item>
     </style>

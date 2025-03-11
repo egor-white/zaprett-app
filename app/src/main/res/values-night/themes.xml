@@ -21,4 +21,8 @@
         <item name="trackTint">@color/light_window</item>
         <item name="switchMinWidth">56dp</item>
     </style>
+    <style name="Custom.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/brightest</item>
+        <item name="trackTint">@color/light_window</item>
+    </style>
 </resources>

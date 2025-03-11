@@ -20,7 +20,7 @@
     <string name="btn_update_on_boot">Обновлять статус при запуске Главной страницы</string>
     <string name="btn_start_service">Запустить сервис</string>
     <string name="btn_stop_service">Остановить сервис</string>
-    <string name="btn_autostart">Запускать сервис при запуске системы</string>
+    <string name="btn_autorestart">Переодически перезапускать сервис</string>
     <string name="snack_already_started">Сервис уже запущен.</string>
     <string name="snack_starting_service">Запускаем сервис...</string>
     <string name="snack_no_service">Сервис не запущен</string>
@@ -28,4 +28,6 @@
     <string name="error_no_storage_title">Нет разрешения</string>
     <string name="error_no_storage_message">Для правильной работы приложения необходимо разрешение на доступ к хранилищу</string>
     <string name="btn_show_full_path">Показывать полный путь к листу</string>
+    <string name="pls_reboot_snack">Перезагрузите устройство для вступления изменений в силу</string>
+    <string name="pls_restart_snack">Перезапустите zaprett для вступления изменений в силу</string>
 </resources>

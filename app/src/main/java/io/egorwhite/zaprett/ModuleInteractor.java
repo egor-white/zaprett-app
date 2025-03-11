@@ -79,7 +79,7 @@ public class ModuleInteractor {
         try {
             FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
             props.load(input);
-            props.setProperty("autostart", String.valueOf(startOnBoot));
+            props.setProperty("autorestart", String.valueOf(startOnBoot));
             OutputStream output = new FileOutputStream(getZaprettPath()+"/config");
             props.store(output, "Don't place '/' in end of directory! Example: /sdcard");
         } catch (IOException e) {
@@ -91,8 +91,8 @@ public class ModuleInteractor {
         try {
             FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
             props.load(input);
-            Log.d("Autostart",  "Use autostart: "+props.getProperty("autostart"));
-            return props.getProperty("autostart").contains("true")||props.getProperty("autostart").contains("1");
+            Log.d("autorestart",  "Use autorestart: "+props.getProperty("autorestart"));
+            return props.getProperty("autorestart").contains("true")||props.getProperty("autorestart").contains("1");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

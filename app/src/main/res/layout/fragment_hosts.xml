@@ -8,12 +8,24 @@
     android:background="@color/background"
     tools:context=".ui.hosts.HostsFragment">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addfab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="96dp"
+        android:background="@color/light_window"
+        android:src="@drawable/ic_add_black_24dp"
+
+        app:backgroundTint="@color/light_window"
+        app:fabCustomSize="80dp"
+        app:tint="@color/brightest" />
     <ImageView
         android:id="@+id/tittlezaprettbg"
         android:layout_width="90dp"
         android:layout_height="100dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="0dp"
         android:importantForAccessibility="no"
         android:src="@drawable/title_oval" />
 
