@@ -23,9 +23,10 @@ jobs:
           java-version: '17'
           java-package: 'jdk'
           cache: 'gradle'
-
+      
       - name: Build APK
         run: | 
+          chmod +x gradlew
           ./gradlew assembleRelease
       
       - name: Set up Keystore
