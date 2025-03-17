@@ -1,4 +1,4 @@
-name: Build, Sign, and Release APK
+name: "Build'n'realese"
 
 on:
   workflow_dispatch:
