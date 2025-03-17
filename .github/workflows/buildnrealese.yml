@@ -33,7 +33,11 @@ jobs:
 
     - name: Decode Keystore
       run: |
-        echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > my-keystore.jks; ls app/build/outputs/apk/realese
+        echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > my-keystore.jks
+    - name: Get Build Directory Content
+      run: |
+        echo $(ls app/build/outputs/apk/realese)
+
 
     - name: Sign the APK
       run: |
