@@ -26,23 +26,20 @@ jobs:
       uses: android-actions/setup-android@v2
 
     - name: Build the APK
+      run: ./gradlew assembleRelease
+
+    - name: Decode Keystore
       run: |
-        chmod +x gradlew
-        ./gradlew assembleRelease
+        echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > my-keystore.jks
 
     - name: Sign the APK
       run: |
-        jarsigner -keystore ${{ secrets.KEYSTORE_FILE }} \
+        jarsigner -keystore my-keystore.jks \
                   -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
                   -keypass ${{ secrets.KEY_PASSWORD }} \
-                  -signedjar app-release-signed.apk \
+                  -signedjar app/build/outputs/apk/release/app-release-signed.apk \
                   app/build/outputs/apk/release/app-release-unsigned.apk \
                   ${{ secrets.KEY_ALIAS }}
-      env:
-        KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
-        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
 
     - name: Create Release
       id: create_release
@@ -61,6 +58,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./app-release-signed.apk
+        asset_path: app/build/outputs/apk/release/app-release-signed.apk
         asset_name: app-release-signed.apk
         asset_content_type: application/vnd.android.package-archive
