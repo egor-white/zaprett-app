@@ -2,7 +2,7 @@ name: Create Release
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Verison, e.g. x.y.z
+        description: vx.y.z
         required: true
         type: string
 
