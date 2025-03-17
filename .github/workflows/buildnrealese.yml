@@ -36,8 +36,7 @@ jobs:
         echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > my-keystore.jks
 
     - name: Sign the APK
-      run: |
-        jarsigner -keystore my-keystore.jks -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} -signedjar app/build/outputs/apk/release/app-release-signed.apk app/build/outputs/apk/release/app-release.apk ${{ secrets.KEY_ALIAS }}
+      run: jarsigner -keystore my-keystore.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}" -keypass "${{ secrets.KEY_PASSWORD }}" -signedjar app/build/outputs/apk/release/app-release-signed.apk app/build/outputs/apk/release/app-release.apk "${{ secrets.KEY_ALIAS }}"
 
     - name: Create Release
       id: create_release
