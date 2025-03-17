@@ -37,7 +37,7 @@ jobs:
 
     - name: Sign the APK
       run: |
-        $ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -1)/apksigner sign --ks my-keystore.jks --ks-pass "pass:${{ secrets.KEYSTORE_PASSWORD }}" --key-pass "pass:${{ secrets.KEY_PASSWORD }}" --out app/build/outputs/apk/release/app-release-signed.apk
+        $ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -1)/apksigner sign --ks my-keystore.jks --ks-pass "pass:${{ secrets.KEYSTORE_PASSWORD }}" --key-pass "pass:${{ secrets.KEY_PASSWORD }}" --out app/build/outputs/apk/release/app-release-signed.apk app/build/outputs/apk/release/app-release.apk
 
     - name: Create Release
       id: create_release
