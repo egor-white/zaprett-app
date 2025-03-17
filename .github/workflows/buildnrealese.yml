@@ -41,10 +41,6 @@ jobs:
           ANDROID_SDK_PATH=$ANDROID_HOME/build-tools/35.0.0/apksigner
           $ANDROID_SDK_PATH sign \
             --ks $RUNNER_TEMP/keystores/keystore.jks \
-            --ks-key-alias ${{ secrets.KEY_ALIAS }} \
-            --ks-pass ${{ secrets.KEYSTORE_PASSWORD }} \
-            --key-pass ${{ secrets.KEY_PASSWORD }} \
-            --out app-release.apk \
             app/build/outputs/apk/release/app-release.apk
 
       - name: Upload APK Artifact
