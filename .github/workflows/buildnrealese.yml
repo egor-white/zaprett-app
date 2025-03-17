@@ -16,6 +16,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
@@ -26,22 +29,20 @@ jobs:
       uses: android-actions/setup-android@v2
 
     - name: Build the APK
-      run: |
-        chmod +x gradlew
-         ./gradlew assembleRelease
+      run: ./gradlew assembleRelease
 
     - name: Decode Keystore
       run: |
         echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > my-keystore.jks
 
     - name: Sign the APK
-  run: |
-    jarsigner -keystore my-keystore.jks \
-              -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
-              -keypass ${{ secrets.KEY_PASSWORD }} \
-              -signedjar app/build/outputs/apk/release/app-release-signed.apk \
-              app/build/outputs/apk/release/app-release.apk \
-              ${{ secrets.KEY_ALIAS }}
+      run: |
+        jarsigner -keystore my-keystore.jks \
+                  -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+                  -keypass ${{ secrets.KEY_PASSWORD }} \
+                  -signedjar app/build/outputs/apk/release/app-release-signed.apk \
+                  app/build/outputs/apk/release/app-release.apk \
+                  ${{ secrets.KEY_ALIAS }}
 
     - name: Create Release
       id: create_release
