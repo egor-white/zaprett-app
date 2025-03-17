@@ -32,7 +32,9 @@ jobs:
       run: ./gradlew assembleRelease
 
     - name: List APKs
-      run: ls -l app/build/outputs/apk/release/
+      run: |
+        ls -l app/build/outputs/apk/release/
+        pwd
 
     - name: Decode Keystore
       run: |
