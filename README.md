@@ -1,6 +1,7 @@
 # zaprett
 ## О приложении
 Приложение разработано для работы с модулем [zaprett](https://github.com/egor-white/zaprett)
+[![Build'n'realese](https://github.com/egor-white/zaprett-app/actions/workflows/buildnrealese.yml/badge.svg?event=release)](https://github.com/egor-white/zaprett-app/actions/workflows/buildnrealese.yml)
 
 На данный момент приложение умеет:
 * Включать, выключать и перезапускать модуль
