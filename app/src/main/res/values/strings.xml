@@ -30,4 +30,5 @@
     <string name="btn_show_full_path">Show full list\'s path</string>
     <string name="pls_reboot_snack">Reboot your device for the changes to take effect</string>
     <string name="pls_restart_snack">Restart zaprett service for the changes to take effects</string>
+    <string name="snack_no_storage">Grant permission to access the storage to continue</string>
 </resources>

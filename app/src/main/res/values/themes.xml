@@ -1,20 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Zaprett" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/design_default_color_primary</item>
+    <style name="Theme.Zaprett" parent="Theme.Material3.DynamicColors.Dark.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/light_window</item>
         <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
         <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
         <item name="colorPrimaryDark">@color/normal_window</item>
-
-        <item name="colorSecondary">@color/design_default_color_secondary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/navbar</item>
         <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
         <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
 
+        <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/normal_window</item>
         <!-- Customize your theme here. -->
         <item name="android:font">@font/productsans</item>
         <item name="android:navigationBarColor">@color/navbar</item>
-
+        <item name="switchStyle">@style/Widget.Material3.CompoundButton.MaterialSwitch</item>
+        <item name="thumbTint">@color/brightest</item>
+        <item name="trackTint">@color/light_window</item>
+        <item name="switchMinWidth">56dp</item>
     </style>
     <style name="Custom.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
         <item name="thumbTint">@color/brightest</item>
