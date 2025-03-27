@@ -153,13 +153,6 @@ public class ModuleInteractor {
         }
     }
     public static String getZaprettPath(){
-        Properties props = new Properties();
-        try {
-            FileInputStream input = new FileInputStream(Environment.getExternalStorageDirectory()+"/zaprett/config");
-            props.load(input);
-            return props.getProperty("zaprettdir");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return "/storage/emulated/0/zaprett";
     }
 }

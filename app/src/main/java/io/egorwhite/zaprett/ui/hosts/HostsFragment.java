@@ -84,7 +84,8 @@ addfab.setOnClickListener(view -> {
 		});
 
 		if (Environment.isExternalStorageManager()) {
-			String[] allLists = ModuleInteractor.getAllLists();
+		 if (new File(ModuleInteractor.getZaprettPath()).exists() && new File(ModuleInteractor.getZaprettPath()+"/config").exists()){
+      String[] allLists = ModuleInteractor.getAllLists();
 			String[] activeLists = ModuleInteractor.getActiveLists();
 			for (int i = 0; i < allLists.length; i++) {
 				String list = allLists[i];
@@ -113,7 +114,19 @@ addfab.setOnClickListener(view -> {
 					Log.i("Added element", "Added switch for " + list);
 				}
 			}
-		}
+		} else { new MaterialAlertDialogBuilder(root.getContext())
+                    .setTitle("Блять🙏🙏🙏")
+                    .setMessage(R.string.snack_no_lists)
+                    .setPositiveButton(R.string.btn_continue, new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.R)
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("https://github.com/egor-white/zaprett"));
+                            startActivity(intent);
+                        }
+                    })
+                    .show();}
+   }
 else {
     new MaterialAlertDialogBuilder(root.getContext())
                     .setTitle(R.string.error_no_storage_title)
