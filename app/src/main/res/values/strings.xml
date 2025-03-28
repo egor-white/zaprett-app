@@ -32,4 +32,5 @@
     <string name="pls_restart_snack">Restart zaprett service for the changes to take effects</string>
     <string name="snack_no_storage">Grant permission to access the storage to continue</string>
     <string name="snack_no_lists">Lists and/or config were not found. Reinstall the module</string>
+    <string name="error">Error</string>
 </resources>

@@ -115,7 +115,7 @@ addfab.setOnClickListener(view -> {
 				}
 			}
 		} else { new MaterialAlertDialogBuilder(root.getContext())
-                    .setTitle("Блять🙏🙏🙏")
+                    .setTitle(R.string.error)
                     .setMessage(R.string.snack_no_lists)
                     .setPositiveButton(R.string.btn_continue, new DialogInterface.OnClickListener() {
                         @RequiresApi(api = Build.VERSION_CODES.R)
