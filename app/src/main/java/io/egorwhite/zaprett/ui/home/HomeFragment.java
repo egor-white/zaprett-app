@@ -11,15 +11,22 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.net.Uri;
+import android.content.Intent;
+import android.content.DialogInterface;
+import android.os.Build;
+import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.RequiresApi;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import io.egorwhite.zaprett.MainActivity;
 import io.egorwhite.zaprett.ModuleInteractor;
