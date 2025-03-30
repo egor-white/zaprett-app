@@ -90,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
         if(ModuleInteractor.checkRoot() && ModuleInteractor.checkModuleInstallation()) {
             settings.edit().putBoolean("use_module", true).apply();
             Log.d("Podsos module", "Module podsosan successefuly");
+        } else {
+            Log.d("Error", "Podsos oshibka ebat");
+            settings.edit().putBoolean("use_module", false).apply();
         }
     }
 
