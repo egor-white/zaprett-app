@@ -1,4 +1,4 @@
-name: "Build'n'realese"
+name: "Build'n'release"
 
 on:
   workflow_dispatch:
@@ -7,6 +7,11 @@ on:
         description: 'Tag for the release'
         required: true
         type: string
+      release_notes:
+        description: 'Release notes (optional)'
+        required: false
+        type: string
+        default: ''
 
 jobs:
   build:
@@ -47,6 +52,7 @@ jobs:
       with:
         tag_name: ${{ github.event.inputs.tag }}
         release_name: Release ${{ github.event.inputs.tag }}
+        body: ${{ github.event.inputs.release_notes }}
         draft: false
         prerelease: false
 
