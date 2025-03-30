@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/home"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_hosts"
+        android:icon="@drawable/hosts"
+        android:title="@string/title_hosts" />
+
+    <!---<item
+        android:id="@+id/navigation_strategy"
+        android:icon="@drawable/strategy"
+        android:title="@string/title_strategy" />!-->
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/settings"
+        android:title="@string/title_settings" />
+
+</menu>

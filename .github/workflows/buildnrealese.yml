@@ -1,0 +1,61 @@
+name: "Build'n'realese"
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag for the release'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+
+    - name: Build the APK
+      run: ./gradlew assembleRelease
+
+    - name: Decode Keystore
+      run: |
+        echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > my-keystore.jks
+
+    - name: Sign the APK
+      run: |
+        $ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -1)/apksigner sign --ks my-keystore.jks --ks-pass "pass:${{ secrets.KEYSTORE_PASSWORD }}" --key-pass "pass:${{ secrets.KEY_PASSWORD }}" --out app/build/outputs/apk/release/zaprett-${{ github.event.inputs.tag }}-signed.apk app/build/outputs/apk/release/app-release-unsigned.apk
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.event.inputs.tag }}
+        release_name: Release ${{ github.event.inputs.tag }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: app/build/outputs/apk/release/zaprett-${{ github.event.inputs.tag }}-signed.apk
+        asset_name: zaprett-${{ github.event.inputs.tag }}-signed.apk
+        asset_content_type: application/vnd.android.package-archive

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.settings.SettingsFragment">
+
+    <ImageView
+        android:id="@+id/tittlezaprettbg"
+        android:layout_width="90dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="40dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/title_oval" />
+
+    <TextView
+        android:id="@+id/titlezaprett"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:paddingBottom="7dp"
+        android:backgroundTint="@color/brightest"
+        android:elegantTextHeight="true"
+        android:fontFamily="@font/unbounded"
+        android:text="@string/title_settings"
+        android:textColor="@color/brightest"
+        android:textSize="32sp"
+        app:layout_anchor="@+id/tittlezaprettbg"
+        app:layout_anchorGravity="start|center"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/btn_use_module"
+                style="@style/Custom.Switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:paddingHorizontal="15dp"
+                android:text="@string/btn_use_root"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                tools:text="@string/btn_use_root" />
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/btn_update_on_create"
+                style="@style/Custom.Switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:paddingHorizontal="15dp"
+                android:text="@string/btn_update_on_boot"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                tools:text="@string/btn_update_on_boot" />
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/btn_show_full_path"
+                style="@style/Custom.Switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:paddingHorizontal="15dp"
+                android:text="@string/btn_show_full_path"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                tools:text="@string/btn_show_full_path" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

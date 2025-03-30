@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background">#17120C</color>
+    <color name="brightest">#FDEDBE</color>
+    <color name="light_window">#57432B</color>
+    <color name="normal_window">#211A12</color>
+    <color name="navbar">#251E16</color>
+
+
+    <color name="primaryColor">#57432B</color>
+    <color name="onPrimaryColor">@color/secondaryColor</color>
+    <color name="secondaryColor">#FDEDBE</color>
+    <color name="onSecondaryColor">@color/primaryColor</color>
+</resources>

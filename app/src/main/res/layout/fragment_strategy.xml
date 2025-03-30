@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.strategy.StrategyFragment">
+
+    <ImageView
+        android:id="@+id/tittlezaprettbg"
+        android:layout_width="90dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="0dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/title_oval" />
+
+    <TextView
+        android:id="@+id/titlezaprett"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:paddingBottom="7dp"
+        android:backgroundTint="@color/brightest"
+        android:elegantTextHeight="true"
+        android:fontFamily="@font/unbounded"
+        android:text="@string/title_strategy"
+        android:textColor="@color/brightest"
+        android:textSize="32sp"
+        app:layout_anchor="@+id/tittlezaprettbg"
+        app:layout_anchorGravity="start|center"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
