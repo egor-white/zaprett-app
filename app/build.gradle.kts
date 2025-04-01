@@ -11,8 +11,8 @@ android {
         applicationId = "io.egorwhite.zaprett"
         minSdk = 30
         targetSdk = 34
-        versionCode = 235
-        versionName = "2.3.5"
+        versionCode = 236
+        versionName = "2.3.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
