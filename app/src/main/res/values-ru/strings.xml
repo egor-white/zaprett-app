@@ -33,4 +33,15 @@
     <string name="snack_no_storage">Предоставьте разрешение на доступ к хранилищу, чтобы продолжить</string>
     <string name="snack_no_lists">Листы и/или конфиг не найдены. Переустановите модуль</string>
     <string name="error">Ошибка</string>
+    <string name="btn_later">Позже</string>
+    <string name="btn_download">Скачать</string>
+    <string name="downloading_title">Загрузка APK...</string>
+    <string name="downloading_text">%1$s -> %2$s\nИзменения: %3$s</string>
+    <string name="btn_cancel">Отмена</string>
+    <string name="new_update">Доступно обновление</string>
+    <string name="new_upd_text">Новая версия %1$s.\nИзменения: %2$s</string>
+    <string name="updating_msg">Скачивание zaprett</string>
+    <string name="already_downloading">Загрузка уже идёт</string>
+    <string name="download_canceled">Загрузка отменена</string>
+    <string name="btn_autoupdate">Предлагать обновления</string>
 </resources>

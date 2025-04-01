@@ -30,6 +30,7 @@ import androidx.core.content.PackageManagerCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
+import android.widget.Toast;
 import androidx.navigation.ui.NavigationUI;
 
 import io.egorwhite.zaprett.databinding.ActivityMainBinding;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     public static SharedPreferences settings;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private AppUpdater.UpdateCheckCallback updateCallback;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
@@ -89,11 +91,36 @@ public class MainActivity extends AppCompatActivity {
         }
         if(ModuleInteractor.checkRoot() && ModuleInteractor.checkModuleInstallation()) {
             settings.edit().putBoolean("use_module", true).apply();
-            Log.d("Podsos module", "Module podsosan successefuly");
+            Log.d("Podsos module", "Module podsosan successefully");
         } else {
             Log.d("Error", "Podsos oshibka ebat");
             settings.edit().putBoolean("use_module", false).apply();
         }
+    if(settings.getBoolean("autoupdate", true)){
+        updateCallback = new AppUpdater.UpdateCheckCallback() {
+            @Override
+            public void onUpdateAvailable(AppUpdater.ReleaseInfo releaseInfo) {
+                    new MaterialAlertDialogBuilder(MainActivity.this)
+                        .setTitle(R.string.new_update)
+                        .setMessage(String.format(getString(R.string.new_upd_text),releaseInfo.getVersion(),releaseInfo.getChangelog()))
+                        .setPositiveButton(R.string.btn_download, (dialog, which) -> {
+                            new AppUpdater(MainActivity.this, updateCallback).downloadUpdate(releaseInfo);
+                        })
+                        .setNegativeButton(R.string.btn_later, null)
+                        .show();
+                }
+                @Override
+                public void onNoUpdateAvailable(){
+                    Log.i("Version", "Latest version installed");
+                }
+                @Override
+                public void onError(String errorMessage) {
+                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            };
+        new AppUpdater(MainActivity.this, updateCallback).checkForUpdates();
     }
-
+  }
 }
+
+

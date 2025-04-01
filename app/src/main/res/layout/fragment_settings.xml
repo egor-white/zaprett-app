@@ -74,6 +74,18 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 tools:text="@string/btn_show_full_path" />
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/btn_autoupdate"
+                style="@style/Custom.Switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:paddingHorizontal="15dp"
+                android:text="@string/btn_autoupdate"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                tools:text="@string/btn_show_full_path" />
         </LinearLayout>
     </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

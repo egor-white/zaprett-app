@@ -33,4 +33,15 @@
     <string name="snack_no_storage">Grant permission to access the storage to continue</string>
     <string name="snack_no_lists">Lists and/or config were not found. Reinstall the module</string>
     <string name="error">Error</string>
+    <string name="btn_later">Later</string>
+    <string name="btn_download">Download</string>
+    <string name="downloading_title">Loading APK...</string>
+    <string name="downloading_text">%1$s -> %2$s\nChangelog: %3$s</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="new_update">Update avaliable</string>
+    <string name="new_upd_text">New verison %1$s.\nChangelog: %2$s</string>
+    <string name="updating_msg">Updating zaprett</string>
+    <string name="already_downloading">Download already in progress</string>
+    <string name="download_canceled">Download canceled.</string>
+    <string name="btn_autoupdate">Offer updates</string>
 </resources>
