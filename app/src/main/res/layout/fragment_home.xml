@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/background"
     tools:context=".ui.home.HomeFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -15,11 +14,8 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="96dp"
-        android:background="@color/light_window"
         android:src="@drawable/ic_restart_black_24dp"
-        app:backgroundTint="@color/light_window"
-        app:fabCustomSize="80dp"
-        app:tint="@color/brightest" />
+        app:fabCustomSize="80dp"/>
 
     <ImageView
         android:id="@+id/tittlezaprettbg"
@@ -52,7 +48,9 @@
         android:layout_height="320dp"
         android:layout_gravity="center_horizontal"
         android:paddingHorizontal="10dp"
-        android:src="@drawable/statusbar" />
+        android:src="@drawable/statusbar"
+        android:tint="?attr/colorSecondary"
+        />
 
     <ImageView
         android:id="@+id/statusicon"
@@ -63,7 +61,7 @@
         android:src="@drawable/ic_question_black_24dp"
         app:layout_anchor="@+id/statusbarbg"
         app:layout_anchorGravity="start|center_vertical"
-        app:tint="@color/normal_window" />
+        app:tint="?attr/colorOnSecondary" />
 
     <TextView
         android:id="@+id/statustitle"
@@ -73,7 +71,7 @@
         android:breakStrategy="high_quality"
         android:fontFamily="@font/unbounded"
         android:text="@string/status_not_availible"
-        android:textColor="@color/normal_window"
+        android:textColor="?attr/colorOnSecondary"
         app:layout_anchor="@+id/statusbarbg"
         app:layout_anchorGravity="center" />
     <Button
