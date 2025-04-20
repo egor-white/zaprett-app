@@ -22,6 +22,7 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -65,87 +67,96 @@ public class HostsFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater,
 							 ViewGroup container, Bundle savedInstanceState) {
 		HostsViewModel HostsViewModel =
-			new ViewModelProvider(this).get(HostsViewModel.class);
+				new ViewModelProvider(this).get(HostsViewModel.class);
 
 		binding = FragmentHostsBinding.inflate(inflater, container, false);
 		View root = binding.getRoot();
 		listLayout = root.findViewById(R.id.listlayout);
 		addfab = root.findViewById(R.id.addfab);
-addfab.setOnClickListener(view -> {
-			if (Environment.isExternalStorageManager()) {
+		addfab.setOnClickListener(view -> {
+			if (MainActivity.hasStorageManagementPermission(getContext())) {
 				Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 				intent.addCategory(Intent.CATEGORY_OPENABLE);
 				intent.setType("text/*");
 				Intent chooser = Intent.createChooser(intent, "Выберите файл листа");
 				startActivityForResult(chooser, 228);
 			} else {
-			    Snackbar.make(root.getRootView(), R.string.snack_no_storage, Snackbar.LENGTH_SHORT).show();
+				Snackbar.make(root.getRootView(), R.string.snack_no_storage, Snackbar.LENGTH_SHORT).show();
 			}
 		});
 
-		if (Environment.isExternalStorageManager()) {
-		 if (new File(ModuleInteractor.getZaprettPath()).exists() && new File(ModuleInteractor.getZaprettPath()+"/config").exists()){
-      String[] allLists = ModuleInteractor.getAllLists();
-			String[] activeLists = ModuleInteractor.getActiveLists();
-			for (int i = 0; i < allLists.length; i++) {
-				String list = allLists[i];
-				if (list != null && !list.isEmpty()) {
-					SwitchMaterial switchMaterial = new SwitchMaterial(root.getContext());
-					CharSequence seq;
-					if (MainActivity.settings.getBoolean("show_full_path", true)) {
-						seq = list;
-					} else {
-						seq = list.split("/")[list.split("/").length - 1];
-					}
-					switchMaterial.setText(seq);
-					for (String actlist : activeLists) {
-						if (actlist.contains(list)) {
-							switchMaterial.setChecked(true);
-							Log.i("Enabled switch", "Enabled switch for " + list);
-							break;
+		if (MainActivity.hasStorageManagementPermission(getContext())) {
+			if (new File(ModuleInteractor.getZaprettPath()).exists() && new File(ModuleInteractor.getZaprettPath() + "/config").exists()) {
+				String[] allLists = ModuleInteractor.getAllLists();
+				String[] activeLists = ModuleInteractor.getActiveLists();
+				if (allLists != null && allLists.length > 0) {
+					for (String list : allLists) {
+						if (list != null && !list.isEmpty()) {
+							View cardView = LayoutInflater.from(root.getContext())
+									.inflate(R.layout.item_list_card, listLayout, false);
+
+							TextView listName = cardView.findViewById(R.id.list_name);
+							SwitchMaterial switchMaterial = cardView.findViewById(R.id.list_switch);
+							Button actionButton = cardView.findViewById(R.id.action_button);
+
+							// Устанавливаем отображаемое имя
+							CharSequence displayText = MainActivity.settings.getBoolean("show_full_path", true) ? list : list.split("/")[list.lastIndexOf("/")];
+							listName.setText(displayText);
+
+							// Проверяем активен ли список
+							boolean isActive = false;
+							for (String activeList : activeLists) {
+								if (activeList.contains(list)) {
+									isActive = true;
+									break;
+								}
+							}
+							switchMaterial.setChecked(isActive);
+
+							// Обработка переключателя
+							switchMaterial.setOnCheckedChangeListener((buttonView, isChecked) -> {
+								Snackbar.make(root.getRootView(), R.string.pls_restart_snack, Snackbar.LENGTH_SHORT).show();
+								if (isChecked) {
+									ModuleInteractor.enableList(list);
+								} else {
+									ModuleInteractor.disableList(list);
+								}
+							});
+
+							// Обработка кнопки действия
+							actionButton.setOnClickListener(v -> {
+								// Прямое действие при клике на кнопку
+								new MaterialAlertDialogBuilder(root.getContext())
+										.setTitle(R.string.title_deletion)
+										.setMessage(getString(R.string.msg_deletion, list))
+										.setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												new File(list).delete();
+											}
+										})
+										.setNegativeButton(R.string.btn_cancel, null)
+										.show();
+							});
+
+							listLayout.addView(cardView);
 						}
 					}
-					switchMaterial.setOnCheckedChangeListener((compoundButton, b) -> {
-						Snackbar.make(root.getRootView(), R.string.pls_restart_snack, Snackbar.LENGTH_SHORT).show();
-						if (b) ModuleInteractor.enableList(list);
-						else ModuleInteractor.disableList(list);
-					});
-					listLayout.addView(switchMaterial);
-					Log.i("Added element", "Added switch for " + list);
+				} else {
+					new MaterialAlertDialogBuilder(root.getContext())
+							.setTitle(R.string.error)
+							.setMessage(R.string.snack_no_lists)
+							.setPositiveButton(R.string.btn_continue, (dialog, which) -> {
+								Intent intent = new Intent(Intent.ACTION_VIEW,
+										Uri.parse("https://github.com/egor-white/zaprett"));
+								startActivity(intent);
+							})
+							.show();
 				}
 			}
-		} else { new MaterialAlertDialogBuilder(root.getContext())
-                    .setTitle(R.string.error)
-                    .setMessage(R.string.snack_no_lists)
-                    .setPositiveButton(R.string.btn_continue, new DialogInterface.OnClickListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.R)
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse("https://github.com/egor-white/zaprett"));
-                            startActivity(intent);
-                        }
-                    })
-                    .show();}
-   }
-else {
-    new MaterialAlertDialogBuilder(root.getContext())
-                    .setTitle(R.string.error_no_storage_title)
-                    .setMessage(R.string.snack_no_storage)
-                    .setPositiveButton(R.string.btn_continue, new DialogInterface.OnClickListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.R)
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent();
-                            intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                            Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-                            intent.setData(uri);
-                            startActivity(intent);
-                        }
-                    })
-                    .show();
-}
+		}
 		return root;
 	}
-
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();

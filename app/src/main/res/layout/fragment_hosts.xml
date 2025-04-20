@@ -12,8 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="85dp"
         android:background="@color/light_window"
         android:src="@drawable/ic_add_black_24dp"
 
@@ -46,14 +46,21 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="100dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="afterDescendants"
+        android:paddingBottom="?actionBarSize"
+        android:clipToPadding="false"
+        >
         <LinearLayout
             android:id="@+id/listlayout"
             style="@style/Custom.Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="10dp">
+            android:paddingHorizontal="10dp"
+            android:focusable="false">
         </LinearLayout>
     </ScrollView>
 

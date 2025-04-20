@@ -18,6 +18,7 @@ import android.os.Build;
 import java.io.File;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.RequiresApi;
@@ -51,7 +52,7 @@ public class HomeFragment extends Fragment {
         SwitchMaterial autorestart = root.getRootView().findViewById(R.id.btn_toggle_autorestart);
         Button startservice = root.getRootView().findViewById(R.id.btn_start_service);
         Button stopservice = root.getRootView().findViewById(R.id.btn_stop_service);
-        ImageView statusbar = root.getRootView().findViewById(R.id.statusbarbg);
+        CardView statusbar = root.getRootView().findViewById(R.id.statuscard);
         ImageView statusicon = root.getRootView().findViewById(R.id.statusicon);
         TextView statustext = root.getRootView().findViewById(R.id.statustitle);
        

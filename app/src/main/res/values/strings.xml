@@ -44,4 +44,8 @@
     <string name="already_downloading">Download already in progress</string>
     <string name="download_canceled">Download canceled.</string>
     <string name="btn_autoupdate">Offer updates</string>
+    <string name="btn_delete">Delete</string>
+    <string name="title_deletion">Deletion</string>
+    <string name="btn_yes">Yes</string>
+    <string name="msg_deletion">Are you really want to delete %1$s? This action can\'t be undone</string>
 </resources>

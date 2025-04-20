@@ -44,4 +44,8 @@
     <string name="already_downloading">Загрузка уже идёт</string>
     <string name="download_canceled">Загрузка отменена</string>
     <string name="btn_autoupdate">Предлагать обновления</string>
+    <string name="btn_delete">Удалить</string>
+    <string name="title_deletion">Удаление</string>
+    <string name="btn_yes">Да</string>
+    <string name="msg_deletion">Вы действительно хотите удалить %1$s? Это действие не может быть отменено</string>
 </resources>

@@ -1,6 +1,7 @@
 package io.egorwhite.zaprett;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.view.WindowManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.topjohnwu.superuser.Shell;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -33,6 +35,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import android.widget.Toast;
 import androidx.navigation.ui.NavigationUI;
 
+import java.io.File;
+import java.io.IOException;
+
 import io.egorwhite.zaprett.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public static SharedPreferences settings;
     private FirebaseAnalytics mFirebaseAnalytics;
     private AppUpdater.UpdateCheckCallback updateCallback;
+
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
@@ -72,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     .show();
             settings.edit().putBoolean("welcome_dialog", false).apply();
         }
-        if (!Environment.isExternalStorageManager()){
+        if (!hasStorageManagementPermission(getApplicationContext())){
             new MaterialAlertDialogBuilder(MainActivity.this)
                     .setTitle(R.string.error_no_storage_title)
                     .setMessage(R.string.error_no_storage_message)
@@ -80,11 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         @RequiresApi(api = Build.VERSION_CODES.R)
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent();
-                            intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                            Uri uri = Uri.fromParts("package", getPackageName(), null);
-                            intent.setData(uri);
-                            startActivity(intent);
+                            requestStorageManagementPermission(MainActivity.this, 1337);
                         }
                     })
                     .show();
@@ -121,6 +123,34 @@ public class MainActivity extends AppCompatActivity {
         new AppUpdater(MainActivity.this, updateCallback).checkForUpdates();
     }
   }
+    public static boolean hasStorageManagementPermission(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Для Android 11+ используем официальный API
+            return Environment.isExternalStorageManager();
+        }
+        else {
+            // Для версий ниже Android 10 проверяем стандартное разрешение
+            return ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    /**
+     * Запрашивает права на управление внешним хранилищем
+     * Совместимо с Android 10 и выше
+     */
+    public static void requestStorageManagementPermission(Activity activity, int requestCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Официальный способ для Android 11+
+            Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+            activity.startActivityForResult(intent, requestCode);
+        } else {
+            // Для версий ниже Android 10 запрашиваем стандартное разрешение
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    requestCode);
+        }
+    }
 }
 
 
