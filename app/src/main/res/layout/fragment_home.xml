@@ -88,8 +88,6 @@
             app:layout_anchor="@+id/statuscard"
             app:layout_anchorGravity="center" />
     </androidx.cardview.widget.CardView>
-
-
     <Button
         style="@style/Widget.Material3.Button.Icon"
         app:icon="@drawable/ic_play_bright_24dp"
