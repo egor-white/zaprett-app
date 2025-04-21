@@ -5,7 +5,7 @@ import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
 public class QSTileService extends TileService {
-
+    private static SharedPreferences settings;
     @Override
     public void onStartListening() {
         super.onStartListening();
@@ -15,7 +15,7 @@ public class QSTileService extends TileService {
     @Override
     public void onClick() {
         super.onClick();
-        // Обработка клика по тайлу
+        settings = this.getPreferences(Context.MODE_PRIVATE);
         Tile tile = getQsTile();
         boolean isActive = tile.getState() == Tile.STATE_ACTIVE;
         if (!isActive){ ModuleInteractor.startService();}
@@ -27,7 +27,7 @@ public class QSTileService extends TileService {
 
     private void updateTile() {
         Tile tile = getQsTile();
-        if (MainActivity.settings.getBoolean("use_module", false)){
+        if (settings.getBoolean("use_module", false)){
             if (ModuleInteractor.getStatus()){ tile.setState(Tile.STATE_ACTIVE);}
             else { tile.setState(Tile.STATE_INACTIVE);}
         }
