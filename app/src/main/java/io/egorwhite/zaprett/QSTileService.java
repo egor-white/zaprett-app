@@ -11,16 +11,19 @@ public class QSTileService extends TileService {
         super.onStartListening();
         updateTile();
     }
-
+    @Override
+public void onCreate() {
+    super.onCreate();
+    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+}
     @Override
     public void onClick() {
         super.onClick();
-        settings = this.getPreferences(Context.MODE_PRIVATE);
+        settings = getApplicationContext().getSharedPreferences(Context.MODE_PRIVATE);
         Tile tile = getQsTile();
         boolean isActive = tile.getState() == Tile.STATE_ACTIVE;
         if (!isActive){ ModuleInteractor.startService();}
         else { ModuleInteractor.stopService();}
-        // Переключение состояния
         tile.setState(isActive ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE);
         tile.updateTile();
     }
