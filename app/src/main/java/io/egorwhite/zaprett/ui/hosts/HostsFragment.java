@@ -16,6 +16,8 @@ import android.provider.Settings;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import android.os.Build;
 import android.os.Environment;
@@ -32,6 +34,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -50,7 +53,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import io.egorwhite.zaprett.MainActivity;
 import io.egorwhite.zaprett.ModuleInteractor;
@@ -72,6 +77,7 @@ public class HostsFragment extends Fragment {
 		binding = FragmentHostsBinding.inflate(inflater, container, false);
 		View root = binding.getRoot();
 		listLayout = root.findViewById(R.id.listlayout);
+		listLayout.removeAllViews();
 		addfab = root.findViewById(R.id.addfab);
 		addfab.setOnClickListener(view -> {
 			if (MainActivity.hasStorageManagementPermission(getContext())) {
@@ -89,33 +95,38 @@ public class HostsFragment extends Fragment {
 			if (new File(ModuleInteractor.getZaprettPath()).exists() && new File(ModuleInteractor.getZaprettPath() + "/config").exists()) {
 				String[] allLists = ModuleInteractor.getAllLists();
 				String[] activeLists = ModuleInteractor.getActiveLists();
-				if (allLists != null && allLists.length > 0) {
+				if (allLists.length > 0) {
 					for (String list : allLists) {
 						if (list != null && !list.isEmpty()) {
-							View cardView = LayoutInflater.from(root.getContext())
-									.inflate(R.layout.item_list_card, listLayout, false);
+							CardView cardView = (CardView) LayoutInflater.from(root.getContext()).inflate(R.layout.item_list_card, listLayout, false);
 
 							TextView listName = cardView.findViewById(R.id.list_name);
 							SwitchMaterial switchMaterial = cardView.findViewById(R.id.list_switch);
 							Button actionButton = cardView.findViewById(R.id.action_button);
 
-							// Устанавливаем отображаемое имя
-							CharSequence displayText = MainActivity.settings.getBoolean("show_full_path", true) ? list : list.split("/")[list.lastIndexOf("/")];
+							CharSequence displayText = requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("show_full_path", true) ? list : list.split("/")[list.lastIndexOf("/")];
 							listName.setText(displayText);
 
-							// Проверяем активен ли список
 							boolean isActive = false;
-							for (String activeList : activeLists) {
-								if (activeList.contains(list)) {
-									isActive = true;
-									break;
+
+							if (activeLists.length > 0) {
+								for (String activeList : activeLists) {
+									if (activeList.equals(list)) {
+										isActive = true;
+										Log.d("Activating list", activeList);
+										break;
+									}
 								}
 							}
+
+							switchMaterial.setOnCheckedChangeListener(null);
 							switchMaterial.setChecked(isActive);
 
-							// Обработка переключателя
 							switchMaterial.setOnCheckedChangeListener((buttonView, isChecked) -> {
-								Snackbar.make(root.getRootView(), R.string.pls_restart_snack, Snackbar.LENGTH_SHORT).show();
+								HostsViewModel.setSwitchState(list, isChecked);
+								Snackbar.make(root.getRootView(), R.string.pls_restart_snack, Snackbar.LENGTH_SHORT)
+										.setAction(R.string.btn_restart, v -> {ModuleInteractor.restartService();})
+										.show();
 								if (isChecked) {
 									ModuleInteractor.enableList(list);
 								} else {
@@ -123,18 +134,14 @@ public class HostsFragment extends Fragment {
 								}
 							});
 
-							// Обработка кнопки действия
 							actionButton.setOnClickListener(v -> {
-								// Прямое действие при клике на кнопку
 								new MaterialAlertDialogBuilder(root.getContext())
 										.setTitle(R.string.title_deletion)
 										.setMessage(getString(R.string.msg_deletion, list))
-										.setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(DialogInterface dialog, int which) {
-												new File(list).delete();
-											}
-										})
+										.setPositiveButton(R.string.btn_yes, (dialog, which) -> {
+                                            new File(list).delete();
+                                            listLayout.removeView(cardView);
+                                        })
 										.setNegativeButton(R.string.btn_cancel, null)
 										.show();
 							});
@@ -164,6 +171,12 @@ public class HostsFragment extends Fragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		checkConfigChanges();
+	}
+
+	@Override
 	public void onActivityResult(int requestCode, int resultCode,
 								 Intent resultData) {
 		if (requestCode == 228
@@ -175,31 +188,50 @@ public class HostsFragment extends Fragment {
 			}
 		}
 	}
+	private long lastConfigModified = 0;
+
+	private void checkConfigChanges() {
+		File configFile = new File(ModuleInteractor.getZaprettPath() + "/config");
+		if (!configFile.exists()) {
+			Log.e("ConfigChecker", "Файл config не найден!");
+			return;
+		}
+
+		long lastModified = configFile.lastModified();
+		if (lastConfigModified == 0) {
+			lastConfigModified = lastModified;
+			Log.d("ConfigChecker", "Инициализация времени модификации: " + lastModified);
+		} else {
+			if (lastModified != lastConfigModified) {
+				Log.w("ConfigChecker", "ВНИМАНИЕ! Файл config был изменён! Старое время: " + lastConfigModified + ", новое: " + lastModified);
+				lastConfigModified = lastModified;
+			} else {
+				Log.d("ConfigChecker", "Файл config НЕ менялся");
+			}
+		}
+	}
+
 
 	//ДАЛЬШЕ ПИЗДЕЦ!!!!
 	//ИИ-СГЕНЕРИРОВАНО
-	public static File copyFileToDirectory(Context context, Uri uri, String destinationDirectory) {
+	public File copyFileToDirectory(Context context, Uri uri, String destinationDirectory) {
 		File destinationFile = null;
 		try {
-			// Создаем директорию, если она не существует
 			File dir = new File(destinationDirectory);
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
 
-			// Получаем имя файла из Uri
 			String fileName = getFileName(context, uri);
 			if (fileName == null) {
 				fileName = "file_" + System.currentTimeMillis(); // Если имя файла не удалось получить, создаем уникальное имя
 			}
 
-			// Создаем файл в целевой директории
 			destinationFile = new File(dir, fileName);
 			if (destinationFile.exists()) {
 				destinationFile.delete();
 			}
 
-			// Копируем данные из Uri в целевой файл
 			InputStream inputStream = context.getContentResolver().openInputStream(uri);
 			OutputStream outputStream = new FileOutputStream(destinationFile);
 
@@ -215,29 +247,13 @@ public class HostsFragment extends Fragment {
 
 			Log.d("FileUtils", "File copied successfully to " + destinationFile.getAbsolutePath());
 
-			String[] activeLists = ModuleInteractor.getActiveLists();
-			SwitchMaterial switchMaterial = new SwitchMaterial(listLayout.getContext());
-			CharSequence seq;
-			String list = ModuleInteractor.getZaprettPath() + "/lists/" + fileName;
-			if (MainActivity.settings.getBoolean("show_full_path", true)) {
-				seq = list;
-			} else {
-				seq = fileName;
-			}
-			switchMaterial.setText(seq);
-			for (String actlist : activeLists) {
-				if (actlist.contains(list)) {
-					switchMaterial.setChecked(true);
-					Log.i("Enabled switch", "Enabled switch for " + list);
-					break;
-				}
-			}
-			switchMaterial.setOnCheckedChangeListener((compoundButton, b) -> {
-				Snackbar.make(listLayout.getRootView(), R.string.pls_restart_snack, Snackbar.LENGTH_SHORT).show();
-				if (b) ModuleInteractor.enableList(list);
-				else ModuleInteractor.disableList(list);
-			});
-			listLayout.addView(switchMaterial);
+			ModuleInteractor.enableList(fileName);
+
+			requireActivity().getSupportFragmentManager()
+					.beginTransaction()
+					.detach(this)
+					.attach(this)
+					.commit();
 
 		} catch (Exception e) {
 			Log.e("FileUtils", "Error copying file", e);

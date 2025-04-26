@@ -10,10 +10,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class ModuleInteractor {
     private static final String TAG = "ModuleInteractor";
@@ -117,29 +119,44 @@ public class ModuleInteractor {
     private static void modifyActiveLists(boolean enable, String path) {
         Properties props = new Properties();
         File configFile = new File(getZaprettPath() + "/config");
+        if (configFile.exists()){
+            try (FileInputStream input = new FileInputStream(configFile)) {
+                props.load(input);
+                String currentLists = props.getProperty("activelists", "");
 
-        try (FileInputStream input = new FileInputStream(configFile)) {
-            props.load(input);
-            String currentLists = props.getProperty("activelists", "");
-            List<String> lists = new ArrayList<>(Arrays.asList(currentLists.split(",")));
+                // Разделяем строку на список и удаляем дубликаты
+                List<String> lists = new ArrayList<>(Arrays.asList(currentLists.split(",")));
+                lists = lists.stream()
+                        .filter(s -> !s.trim().isEmpty()) // Удаляем пустые строки
+                        .distinct() // Удаляем дубликаты
+                        .collect(Collectors.toList());
 
-            if (enable) {
-                if (!lists.contains(path)) {
-                    lists.add(path);
+                if (enable) {
+                    if (!lists.contains(path)) {
+                        lists.add(path);
+                    }
+                } else {
+                    lists.remove(path);
                 }
-            } else {
-                lists.remove(path);
-            }
 
-            String newLists = String.join(",", lists);
-            props.setProperty("activelists", newLists);
+                // Снова проверяем на дубликаты перед сохранением
+                List<String> finalLists = lists.stream()
+                        .distinct()
+                        .collect(Collectors.toList());
 
-            try (OutputStream output = new FileOutputStream(configFile)) {
-                props.store(output, null);
+                String newLists = String.join(",", finalLists);
+                props.setProperty("activelists", newLists);
+
+                try (OutputStream output = Files.newOutputStream(configFile.toPath())) {
+                    props.store(output, "");
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Error modifying active lists", e);
+                throw new RuntimeException("Failed to update config", e);
             }
-        } catch (IOException e) {
-            Log.e(TAG, "Error modifying active lists", e);
-            throw new RuntimeException("Failed to update config", e);
+        }
+        else {
+            Log.e("Error modifying active lists", "No config file in zaprett directory");
         }
     }
 

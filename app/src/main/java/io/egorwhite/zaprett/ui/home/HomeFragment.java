@@ -1,5 +1,6 @@
 package io.egorwhite.zaprett.ui.home;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,14 +58,19 @@ public class HomeFragment extends Fragment {
         TextView statustext = root.getRootView().findViewById(R.id.statustitle);
        
       if (new File(ModuleInteractor.getZaprettPath()).exists() && new File(ModuleInteractor.getZaprettPath()+"/config").exists()){
-        if (MainActivity.settings.getBoolean("use_module", false) && ModuleInteractor.getStartOnBoot()){
+        if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false) && ModuleInteractor.getStartOnBoot()){
             autorestart.setChecked(true);
             Log.d("Enabled switch", "Enabled autorestart switch");
         }
 
         fab.setOnClickListener(v -> {
-            if (MainActivity.settings.getBoolean("use_module", false)) {
-                ModuleInteractor.restartService();
+            if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ModuleInteractor.restartService();
+                    }
+                }).start();
                 Snackbar.make(root.getRootView(), R.string.snack_reload, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
             }
             else {
@@ -73,7 +79,7 @@ public class HomeFragment extends Fragment {
         });
 
         statusbar.setOnClickListener(v -> {
-            if (MainActivity.settings.getBoolean("use_module", false)){
+            if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)){
                 if (ModuleInteractor.getStatus()){
                     statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
                     statustext.setText(R.string.status_enabled);
@@ -86,12 +92,17 @@ public class HomeFragment extends Fragment {
             else Snackbar.make(root.getRootView(), R.string.snack_module_disabled, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
         });
         startservice.setOnClickListener(v -> {
-            if (MainActivity.settings.getBoolean("use_module", false)){
+            if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)){
                 if (ModuleInteractor.getStatus()){
                     Snackbar.make(root.getRootView(), R.string.snack_already_started, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
                 }
                 else {
-                    ModuleInteractor.startService();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ModuleInteractor.startService();
+                        }
+                    }).start();
                     Snackbar.make(root.getRootView(), R.string.snack_starting_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
                 }
             }
@@ -99,9 +110,14 @@ public class HomeFragment extends Fragment {
 
         });
         stopservice.setOnClickListener(v -> {
-            if (MainActivity.settings.getBoolean("use_module", false)){
+            if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)){
                 if (ModuleInteractor.getStatus()){
-                    ModuleInteractor.stopService();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ModuleInteractor.stopService();
+                        }
+                    }).start();
                     Snackbar.make(root.getRootView(), R.string.snack_stopping_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
                 }
                 else {
@@ -112,8 +128,13 @@ public class HomeFragment extends Fragment {
 
         });
         autorestart.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (MainActivity.settings.getBoolean("use_module", false)){
-                ModuleInteractor.setStartOnBoot(isChecked);
+            if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)){
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ModuleInteractor.setStartOnBoot(isChecked);
+                    }
+                }).start();
                 Snackbar.make(root.getRootView(), R.string.pls_reboot_snack, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
             }
             else {
@@ -122,7 +143,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        if (MainActivity.settings.getBoolean("use_module", false)&&MainActivity.settings.getBoolean("update_on_boot", false)) {
+        if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)&&requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("update_on_boot", false)) {
             if (ModuleInteractor.getStatus()){
                 statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
                 statustext.setText(R.string.status_enabled);

@@ -1,6 +1,9 @@
 package io.egorwhite.zaprett;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
+import android.preference.PreferenceManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
@@ -12,14 +15,14 @@ public class QSTileService extends TileService {
         updateTile();
     }
     @Override
-public void onCreate() {
-    super.onCreate();
-    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-}
+    public void onCreate() {
+        super.onCreate();
+        settings = getApplicationContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+    }
     @Override
     public void onClick() {
         super.onClick();
-        settings = getApplicationContext().getSharedPreferences(Context.MODE_PRIVATE);
+
         Tile tile = getQsTile();
         boolean isActive = tile.getState() == Tile.STATE_ACTIVE;
         if (!isActive){ ModuleInteractor.startService();}

@@ -1,6 +1,7 @@
 package io.egorwhite.zaprett.ui.settings;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -57,21 +58,21 @@ public class SettingsFragment extends Fragment {
         btn_show_full_path = root.findViewById(R.id.btn_show_full_path);
         btn_autoupdate = root.findViewById(R.id.btn_autoupdate);
         //установка выключателей в значения из SharedPreferences
-        btn_use_module.setChecked(MainActivity.settings.getBoolean("use_module", false));
-        btn_update_on_boot.setChecked(MainActivity.settings.getBoolean("update_on_boot", false));
-        btn_show_full_path.setChecked(MainActivity.settings.getBoolean("show_full_path", true));
-        btn_autoupdate.setChecked(MainActivity.settings.getBoolean("autoupdate", true));
+        btn_use_module.setChecked(requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false));
+        btn_update_on_boot.setChecked(requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("update_on_boot", false));
+        btn_show_full_path.setChecked(requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("show_full_path", true));
+        btn_autoupdate.setChecked(requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("autoupdate", true));
 
         btn_use_module.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (ModuleInteractor.checkRoot()){
                 if (ModuleInteractor.checkModuleInstallation()){
                     if (isChecked){
-                        MainActivity.settings.edit().putBoolean("use_module", true).apply();
+                        requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit().putBoolean("use_module", true).apply();
                         btn_update_on_boot.setEnabled(true);
                     }
                     else {
-                        MainActivity.settings.edit().putBoolean("use_module", false).apply();
-                        MainActivity.settings.edit().putBoolean("update_on_boot", false).apply();
+                        requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit().putBoolean("use_module", false).apply();
+                        requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit().putBoolean("update_on_boot", false).apply();
                         btn_update_on_boot.setEnabled(false);
                         btn_update_on_boot.setChecked(false);
                     }
@@ -92,12 +93,12 @@ public class SettingsFragment extends Fragment {
                         .setPositiveButton("OK", null)
                         .show();
                 buttonView.setChecked(false);
-                MainActivity.settings.edit().putBoolean("use_module", false).apply();
+                requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit().putBoolean("use_module", false).apply();
             }
         });
-        btn_update_on_boot.setOnCheckedChangeListener((buttonView, isChecked) -> {MainActivity.settings.edit().putBoolean("update_on_boot", isChecked).apply();});
-        btn_show_full_path.setOnCheckedChangeListener((buttonView, isChecked) -> {MainActivity.settings.edit().putBoolean("show_full_path", isChecked).apply();});
-        btn_autoupdate.setOnCheckedChangeListener((buttonView, isChecked) -> {MainActivity.settings.edit().putBoolean("autoupdate", isChecked).apply();});
+        btn_update_on_boot.setOnCheckedChangeListener((buttonView, isChecked) -> {requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit().putBoolean("update_on_boot", isChecked).apply();});
+        btn_show_full_path.setOnCheckedChangeListener((buttonView, isChecked) -> {requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit().putBoolean("show_full_path", isChecked).apply();});
+        btn_autoupdate.setOnCheckedChangeListener((buttonView, isChecked) -> {requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit().putBoolean("autoupdate", isChecked).apply();});
 
 
         return root;

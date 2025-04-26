@@ -1,5 +1,7 @@
 package io.egorwhite.zaprett;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        settings = this.getPreferences(Context.MODE_PRIVATE);
+        settings = this.getSharedPreferences("settings", Context.MODE_PRIVATE);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     .show();
             settings.edit().putBoolean("welcome_dialog", false).apply();
         }
-        if (!hasStorageManagementPermission(getApplicationContext())){
+        if (!hasStorageManagementPermission(this)){
             new MaterialAlertDialogBuilder(MainActivity.this)
                     .setTitle(R.string.error_no_storage_title)
                     .setMessage(R.string.error_no_storage_message)

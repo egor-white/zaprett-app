@@ -48,4 +48,5 @@
     <string name="title_deletion">Удаление</string>
     <string name="btn_yes">Да</string>
     <string name="msg_deletion">Вы действительно хотите удалить %1$s? Это действие не может быть отменено</string>
+    <string name="btn_restart">Рестарт</string>
 </resources>

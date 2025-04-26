@@ -48,4 +48,5 @@
     <string name="title_deletion">Deletion</string>
     <string name="btn_yes">Yes</string>
     <string name="msg_deletion">Are you really want to delete %1$s? This action can\'t be undone</string>
+    <string name="btn_restart">Restart</string>
 </resources>
