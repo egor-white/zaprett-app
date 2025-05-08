@@ -124,11 +124,10 @@ public class ModuleInteractor {
                 props.load(input);
                 String currentLists = props.getProperty("activelists", "");
 
-                // Разделяем строку на список и удаляем дубликаты
                 List<String> lists = new ArrayList<>(Arrays.asList(currentLists.split(",")));
                 lists = lists.stream()
-                        .filter(s -> !s.trim().isEmpty()) // Удаляем пустые строки
-                        .distinct() // Удаляем дубликаты
+                        .filter(s -> !s.trim().isEmpty())
+                        .distinct()
                         .collect(Collectors.toList());
 
                 if (enable) {
@@ -139,7 +138,6 @@ public class ModuleInteractor {
                     lists.remove(path);
                 }
 
-                // Снова проверяем на дубликаты перед сохранением
                 List<String> finalLists = lists.stream()
                         .distinct()
                         .collect(Collectors.toList());

@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Error", "Podsos oshibka ebat");
             settings.edit().putBoolean("use_module", false).apply();
         }
-    if(settings.getBoolean("autoupdate", true)){
+    if(settings.getBoolean("autoupdate", true)&&hasStorageManagementPermission(this)){
         updateCallback = new AppUpdater.UpdateCheckCallback() {
             @Override
             public void onUpdateAvailable(AppUpdater.ReleaseInfo releaseInfo) {
@@ -127,27 +127,19 @@ public class MainActivity extends AppCompatActivity {
   }
     public static boolean hasStorageManagementPermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // Для Android 11+ используем официальный API
             return Environment.isExternalStorageManager();
         }
         else {
-            // Для версий ниже Android 10 проверяем стандартное разрешение
             return ContextCompat.checkSelfPermission(context,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         }
     }
 
-    /**
-     * Запрашивает права на управление внешним хранилищем
-     * Совместимо с Android 10 и выше
-     */
     public static void requestStorageManagementPermission(Activity activity, int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // Официальный способ для Android 11+
             Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
             activity.startActivityForResult(intent, requestCode);
         } else {
-            // Для версий ниже Android 10 запрашиваем стандартное разрешение
             ActivityCompat.requestPermissions(activity,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     requestCode);

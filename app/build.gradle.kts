@@ -12,15 +12,16 @@ android {
         applicationId = "io.egorwhite.zaprett"
         minSdk = 29
         targetSdk = 34
-        versionCode = 238
-        versionName = "2.3.8"
+        versionCode = 237
+        versionName = "2.3.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {

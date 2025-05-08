@@ -33,6 +33,7 @@ public class QSTileService extends TileService {
 
     private void updateTile() {
         Tile tile = getQsTile();
+        settings = getApplicationContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
         if (settings.getBoolean("use_module", false)){
             if (ModuleInteractor.getStatus()){ tile.setState(Tile.STATE_ACTIVE);}
             else { tile.setState(Tile.STATE_INACTIVE);}

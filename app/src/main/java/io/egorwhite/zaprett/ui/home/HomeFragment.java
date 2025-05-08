@@ -80,49 +80,65 @@ public class HomeFragment extends Fragment {
 
         statusbar.setOnClickListener(v -> {
             if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)){
-                if (ModuleInteractor.getStatus()){
-                    statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
-                    statustext.setText(R.string.status_enabled);
-                }
-                else {
-                    statusicon.setImageResource(R.drawable.ic_disabled_black_24dp);
-                    statustext.setText(R.string.status_disabled);
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ModuleInteractor.getStatus()){
+                            statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
+                            statustext.setText(R.string.status_enabled);
+                        }
+                        else {
+                            statusicon.setImageResource(R.drawable.ic_disabled_black_24dp);
+                            statustext.setText(R.string.status_disabled);
+                        }
+                    }
+                }).start();
             }
             else Snackbar.make(root.getRootView(), R.string.snack_module_disabled, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
         });
         startservice.setOnClickListener(v -> {
             if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)){
-                if (ModuleInteractor.getStatus()){
-                    Snackbar.make(root.getRootView(), R.string.snack_already_started, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
-                }
-                else {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ModuleInteractor.startService();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ModuleInteractor.getStatus()){
+                            Snackbar.make(root.getRootView(), R.string.snack_already_started, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
                         }
-                    }).start();
-                    Snackbar.make(root.getRootView(), R.string.snack_starting_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
-                }
+                        else {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ModuleInteractor.startService();
+                                }
+                            }).start();
+                            Snackbar.make(root.getRootView(), R.string.snack_starting_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
+                        }
+                    }
+                }).start();
             }
             else Snackbar.make(root.getRootView(), R.string.snack_module_disabled, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
 
         });
         stopservice.setOnClickListener(v -> {
             if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)){
-                if (ModuleInteractor.getStatus()){
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ModuleInteractor.stopService();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ModuleInteractor.getStatus()){
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ModuleInteractor.stopService();
+                                }
+                            }).start();
+                            Snackbar.make(root.getRootView(), R.string.snack_stopping_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
                         }
-                    }).start();
-                    Snackbar.make(root.getRootView(), R.string.snack_stopping_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
-                }
-                else {
-                    Snackbar.make(root.getRootView(), R.string.snack_no_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
-                }
+                        else {
+                            Snackbar.make(root.getRootView(), R.string.snack_no_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
+                        }
+                    }
+                }).start();
+
             }
             else Snackbar.make(root.getRootView(), R.string.snack_module_disabled, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
 
@@ -144,14 +160,19 @@ public class HomeFragment extends Fragment {
         });
 
         if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)&&requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("update_on_boot", false)) {
-            if (ModuleInteractor.getStatus()){
-                statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
-                statustext.setText(R.string.status_enabled);
-            }
-            else {
-                statusicon.setImageResource(R.drawable.ic_disabled_black_24dp);
-                statustext.setText(R.string.status_disabled);
-            }
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (ModuleInteractor.getStatus()){
+                        statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
+                        statustext.setText(R.string.status_enabled);
+                    }
+                    else {
+                        statusicon.setImageResource(R.drawable.ic_disabled_black_24dp);
+                        statustext.setText(R.string.status_disabled);
+                    }
+                }
+            }).start();
         }
     } else { new MaterialAlertDialogBuilder(root.getContext())
                     .setTitle(R.string.error)
