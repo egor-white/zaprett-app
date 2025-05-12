@@ -38,8 +38,6 @@
                 android:saveEnabled="true"
                 />
         </LinearLayout>
-
-        <!-- Вторая строка: Кнопка действия -->
         <Button
             android:id="@+id/action_button"
             android:layout_width="wrap_content"
