@@ -3,6 +3,7 @@ package io.egorwhite.zaprett;
 import android.os.Environment;
 import android.util.Log;
 
+import com.google.firebase.BuildConfig;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;

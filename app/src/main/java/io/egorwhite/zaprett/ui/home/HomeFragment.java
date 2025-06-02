@@ -84,12 +84,16 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void run() {
                         if (ModuleInteractor.getStatus()){
-                            statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
-                            statustext.setText(R.string.status_enabled);
+                            requireActivity().runOnUiThread(() -> {
+                                statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
+                                statustext.setText(R.string.status_enabled);
+                            });
                         }
                         else {
-                            statusicon.setImageResource(R.drawable.ic_disabled_black_24dp);
-                            statustext.setText(R.string.status_disabled);
+                            requireActivity().runOnUiThread(() -> {
+                                statusicon.setImageResource(R.drawable.ic_disabled_black_24dp);
+                                statustext.setText(R.string.status_disabled);
+                            });
                         }
                     }
                 }).start();
@@ -102,7 +106,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void run() {
                         if (ModuleInteractor.getStatus()){
-                            Snackbar.make(root.getRootView(), R.string.snack_already_started, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
+                            requireActivity().runOnUiThread(() -> Snackbar.make(root.getRootView(), R.string.snack_already_started, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show());
                         }
                         else {
                             new Thread(new Runnable() {
@@ -111,7 +115,7 @@ public class HomeFragment extends Fragment {
                                     ModuleInteractor.startService();
                                 }
                             }).start();
-                            Snackbar.make(root.getRootView(), R.string.snack_starting_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
+                            requireActivity().runOnUiThread(() -> Snackbar.make(root.getRootView(), R.string.snack_starting_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show());
                         }
                     }
                 }).start();
@@ -121,27 +125,20 @@ public class HomeFragment extends Fragment {
         });
         stopservice.setOnClickListener(v -> {
             if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)){
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (ModuleInteractor.getStatus()){
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
+                if (ModuleInteractor.getStatus()){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
                                     ModuleInteractor.stopService();
                                 }
-                            }).start();
-                            Snackbar.make(root.getRootView(), R.string.snack_stopping_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Snackbar.make(root.getRootView(), R.string.snack_no_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
-                        }
-                    }
-                }).start();
-
+                    }).start();
+                    Snackbar.make(root.getRootView(), R.string.snack_stopping_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    Snackbar.make(root.getRootView(), R.string.snack_no_service, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
+                }
             }
             else Snackbar.make(root.getRootView(), R.string.snack_module_disabled, Snackbar.ANIMATION_MODE_FADE+Snackbar.LENGTH_SHORT).show();
-
         });
         autorestart.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("use_module", false)){
@@ -164,12 +161,16 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void run() {
                     if (ModuleInteractor.getStatus()){
-                        statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
-                        statustext.setText(R.string.status_enabled);
+                        requireActivity().runOnUiThread(() -> {
+                            statusicon.setImageResource(R.drawable.ic_enabled_black_24dp);
+                            statustext.setText(R.string.status_enabled);
+                                });
                     }
                     else {
-                        statusicon.setImageResource(R.drawable.ic_disabled_black_24dp);
-                        statustext.setText(R.string.status_disabled);
+                        requireActivity().runOnUiThread(() -> {
+                            statusicon.setImageResource(R.drawable.ic_disabled_black_24dp);
+                            statustext.setText(R.string.status_disabled);
+                        });
                     }
                 }
             }).start();
