@@ -1,4 +1,7 @@
 # zaprett
+## Важно!
+Это приложение больше не обновляется, я совместно с @Cherret разрабатываю новую [Kotlin-версию](https://github.com/CherretGit/zaprett-app)
+
 ## О приложении
 Приложение разработано для работы с модулем [zaprett](https://github.com/egor-white/zaprett)
 
@@ -12,5 +15,3 @@
 * Адаптация blockcheck.sh для автоматического поиска стратегий
 
 ![Главная](https://i.imgur.com/y1QHqsp.png) ![Хосты](https://i.imgur.com/4zhoe08.png) ![Настройки](https://i.imgur.com/jC99jgm.png)
-
-Приложение разрабатывается при поддержке **Telegram чата** [Usb.mineralka #нахуйРКН](https://t.me/mineral_usb)
